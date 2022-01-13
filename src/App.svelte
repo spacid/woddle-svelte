@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { each } from "svelte/internal";
+	import { onMount } from "svelte";
+
 	let amountOfTries: number = 5;
 	let tries: number = 0;
 	let wordLength: number = 5;
@@ -7,6 +9,7 @@
 	let gameGrid: InputCharacter[][] = new Array<Array<InputCharacter>>(
 		amountOfTries
 	);
+	let words: string[] = [];
 
 	enum CharMatching {
 		CorrectPlace = "correctplace",
@@ -52,8 +55,13 @@
 			inputCaret = 0;
 		}
 	}
-
 	fillInWords();
+	onMount(async () => {
+		const res = await fetch("/words.txt");
+		words = (await res.text())
+			.split(/\r?\n/)
+			.map((item: string) => item.trim());
+	});
 </script>
 
 <main>
