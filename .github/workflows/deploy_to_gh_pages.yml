@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+# Run workflow on every push to the main branch
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-to-github-pages:
+    # use ubuntu-latest image to run steps on
+    runs-on: node:gallium-bullseye
+    steps:
+    # uses GitHub's checkout action to checkout code form the master branch
+    - uses: actions/checkout@v2
+    
+    # install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Build project
+    - name: Build project
+      run: npm build
+      
+    # Add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project.
+    - name: Add .nojekyll file
+      run: touch build/.nojekyll
+    # Deploy to GitHub Pages 
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.2.2
+      with:
+          branch: gh-pages
+          folder: build
+          clean: true
