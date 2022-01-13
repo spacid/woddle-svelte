@@ -29,7 +29,7 @@
 		}
 	}
 
-	function fillInWords() {
+	function fillInGameGrid() {
 		for (var i: number = 0; i < amountOfTries; i++) {
 			gameGrid[i] = new Array<InputCharacter>(wordLength);
 			for (var j: number = 0; j < wordLength; j++) {
@@ -98,7 +98,10 @@
 			inputCaret = 0;
 		}
 	}
-	fillInWords();
+
+	fillInGameGrid();
+
+	// Load in the word list on mount.
 	onMount(async () => {
 		const res = await fetch("/words.txt");
 		words = (await res.text())
