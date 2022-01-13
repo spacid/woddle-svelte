@@ -12,6 +12,14 @@
 	let words: string[] = [];
 	let wordToFind: string;
 
+	enum GameState {
+		Ongoing,
+		Won,
+		Lost,
+	}
+
+	let gameState: GameState = GameState.Ongoing;
+
 	enum CharMatching {
 		CorrectPlace = "correctplace",
 		WrongPlace = "wrongplace",
@@ -72,7 +80,11 @@
 	 * with the non matched characters.
 	 */
 	function addWord() {
-		if (inputCaret === wordLength) {
+		if (
+			gameState == GameState.Ongoing &&
+			tries < amountOfTries &&
+			inputCaret === wordLength
+		) {
 			let notMatchedChars: string[] = new Array<string>();
 			let unmappedIndexes: number[] = new Array<number>();
 			// First pass to determine the characters in the exact same spot as the answer word.
@@ -96,6 +108,12 @@
 			});
 			tries++;
 			inputCaret = 0;
+			// Check game state
+			if (unmappedIndexes.length == 0) {
+				gameState = GameState.Won;
+			} else if (tries == amountOfTries) {
+				gameState = GameState.Lost;
+			}
 		}
 	}
 
@@ -158,6 +176,14 @@
 				<button on:click={removeCharacter}>return</button>
 			</div>
 		</div>
+
+		{#if gameState == GameState.Won}
+			<p>Joepie gewonnen!</p>
+		{:else if gameState == GameState.Lost}
+			<p>Verloren, jammer! Het woord is: {wordToFind}</p>
+		{:else}
+			<p></p>
+		{/if}
 	</div>
 </main>
 
