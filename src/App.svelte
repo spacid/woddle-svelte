@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { each } from "svelte/internal";
 	let amountOfTries: number = 5;
+	let tries: number = 0;
 	let wordLength: number = 5;
+	let inputCaret: number = 0;
 	let gameGrid: InputCharacter[][] = new Array<Array<InputCharacter>>(
 		amountOfTries
 	);
@@ -31,6 +33,26 @@
 			}
 		}
 	}
+
+	function addCharacter(character: string) {
+		if (inputCaret < wordLength) {
+			gameGrid[tries][inputCaret].character = character;
+			inputCaret++;
+		}
+	}
+	function removeCharacter() {
+		if (inputCaret > 0) {
+			inputCaret--;
+			gameGrid[tries][inputCaret].character = "";
+		}
+	}
+	function addWord() {
+		if (inputCaret === wordLength) {
+			tries++;
+			inputCaret = 0;
+		}
+	}
+
 	fillInWords();
 </script>
 
@@ -39,10 +61,48 @@
 		{#each gameGrid as inputWord}
 			<div>
 				{#each inputWord as inputChar}
-					<div class="square {inputChar.match}">{inputChar.character}</div>
+					<div class="square {inputChar.match}">
+						{inputChar.character}
+					</div>
 				{/each}
 			</div>
 		{/each}
+		<div id="keyboard">
+			<div class="row">
+				<button on:click={() => addCharacter("a")}>a</button>
+				<button on:click={() => addCharacter("z")}>z</button>
+				<button on:click={() => addCharacter("e")}>e</button>
+				<button on:click={() => addCharacter("r")}>r</button>
+				<button on:click={() => addCharacter("t")}>t</button>
+				<button on:click={() => addCharacter("y")}>y</button>
+				<button on:click={() => addCharacter("u")}>u</button>
+				<button on:click={() => addCharacter("i")}>i</button>
+				<button on:click={() => addCharacter("o")}>o</button>
+				<button on:click={() => addCharacter("p")}>p</button>
+			</div>
+			<div class="row">
+				<button on:click={() => addCharacter("q")}>q</button>
+				<button on:click={() => addCharacter("s")}>s</button>
+				<button on:click={() => addCharacter("d")}>d</button>
+				<button on:click={() => addCharacter("f")}>f</button>
+				<button on:click={() => addCharacter("g")}>g</button>
+				<button on:click={() => addCharacter("h")}>h</button>
+				<button on:click={() => addCharacter("j")}>j</button>
+				<button on:click={() => addCharacter("k")}>k</button>
+				<button on:click={() => addCharacter("l")}>l</button>
+				<button on:click={() => addCharacter("m")}>m</button>
+			</div>
+			<div class="row">
+				<button on:click={addWord}>enter</button>
+				<button on:click={() => addCharacter("w")}>w</button>
+				<button on:click={() => addCharacter("x")}>x</button>
+				<button on:click={() => addCharacter("c")}>c</button>
+				<button on:click={() => addCharacter("v")}>v</button>
+				<button on:click={() => addCharacter("b")}>b</button>
+				<button on:click={() => addCharacter("n")}>n</button>
+				<button on:click={removeCharacter}>return</button>
+			</div>
+		</div>
 	</div>
 </main>
 
