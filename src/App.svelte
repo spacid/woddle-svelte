@@ -117,6 +117,17 @@
 		}
 	}
 
+	function getRandomWord(){
+		return words[Math.floor(Math.random() * words.length)];
+	}
+
+	function resetGame() {
+		wordToFind = getRandomWord();
+		gameState = GameState.Ongoing;
+		tries = 0;
+		fillInGameGrid();
+	}
+
 	fillInGameGrid();
 
 	// Load in the word list on mount.
@@ -125,7 +136,7 @@
 		words = (await res.text())
 			.split(/\r?\n/)
 			.map((item: string) => item.trim());
-		wordToFind = words[Math.floor(Math.random() * words.length)];
+		wordToFind = getRandomWord();
 	});
 </script>
 
@@ -182,8 +193,10 @@
 		{:else if gameState == GameState.Lost}
 			<p>Verloren, jammer! Het woord is: {wordToFind}</p>
 		{:else}
-			<p></p>
+			<p />
 		{/if}
+
+		<button on:click={resetGame}>Nieuw woord</button>
 	</div>
 </main>
 
