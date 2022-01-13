@@ -18,7 +18,7 @@ jobs:
 
     # Build project
     - name: Build project
-      run: npm build
+      run: npm run build
       
     # Add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project.
     - name: Add .nojekyll file
