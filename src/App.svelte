@@ -133,7 +133,7 @@
 
 	// Load in the word list on mount.
 	onMount(async () => {
-		const res = await fetch("/words.txt");
+		const res = await fetch("./words.txt");
 		words = (await res.text())
 			.split(/\r?\n/)
 			.map((item: string) => item.trim());
