@@ -117,7 +117,7 @@
 		}
 	}
 
-	function getRandomWord(){
+	function getRandomWord() {
 		return words[Math.floor(Math.random() * words.length)];
 	}
 
@@ -125,6 +125,7 @@
 		wordToFind = getRandomWord();
 		gameState = GameState.Ongoing;
 		tries = 0;
+		inputCaret = 0;
 		fillInGameGrid();
 	}
 
@@ -142,6 +143,19 @@
 
 <main>
 	<div id="container">
+		<div class="navbar navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="">Woddle</a>
+				<button
+					title="New word"
+					class="btn button-icon-reload my-2 my-sm-0"
+					on:click={resetGame}
+				>
+					<span class="bi bi-arrow-clockwise" />
+				</button>
+			</div>
+		</div>
+		<div class="game-grid">
 		{#each gameGrid as inputWord}
 			<div>
 				{#each inputWord as inputChar}
@@ -151,8 +165,9 @@
 				{/each}
 			</div>
 		{/each}
+		</div>
 		<div id="keyboard">
-			<div class="row">
+			<div class="keyboard-row">
 				<button on:click={() => addCharacter("a")}>a</button>
 				<button on:click={() => addCharacter("z")}>z</button>
 				<button on:click={() => addCharacter("e")}>e</button>
@@ -164,7 +179,7 @@
 				<button on:click={() => addCharacter("o")}>o</button>
 				<button on:click={() => addCharacter("p")}>p</button>
 			</div>
-			<div class="row">
+			<div class="keyboard-row">
 				<button on:click={() => addCharacter("q")}>q</button>
 				<button on:click={() => addCharacter("s")}>s</button>
 				<button on:click={() => addCharacter("d")}>d</button>
@@ -176,15 +191,19 @@
 				<button on:click={() => addCharacter("l")}>l</button>
 				<button on:click={() => addCharacter("m")}>m</button>
 			</div>
-			<div class="row">
-				<button on:click={addWord}>enter</button>
+			<div class="keyboard-row">
+				<button on:click={addWord}>
+					<span class="bi bi-arrow-return-left" />
+				</button>
 				<button on:click={() => addCharacter("w")}>w</button>
 				<button on:click={() => addCharacter("x")}>x</button>
 				<button on:click={() => addCharacter("c")}>c</button>
 				<button on:click={() => addCharacter("v")}>v</button>
 				<button on:click={() => addCharacter("b")}>b</button>
 				<button on:click={() => addCharacter("n")}>n</button>
-				<button on:click={removeCharacter}>return</button>
+				<button on:click={removeCharacter}>
+					<span class="bi bi-backspace" />
+				</button>
 			</div>
 		</div>
 
@@ -195,8 +214,6 @@
 		{:else}
 			<p />
 		{/if}
-
-		<button on:click={resetGame}>Nieuw woord</button>
 	</div>
 </main>
 
@@ -208,13 +225,6 @@
 		margin: 0 auto;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
@@ -223,7 +233,7 @@
 
 	#container {
 		margin: auto;
-		width: 23em;
+		width: 30em;
 	}
 	.correctplace {
 		background: #6aaa64;
@@ -241,17 +251,53 @@
 		background: #b2beb5;
 	}
 
+	.game-grid{
+		margin: 10px 0 10px 0;
+	}
 	.square {
 		vertical-align: top;
-		margin-top: 4px;
 		border: 1px black solid;
 		border-radius: 5px;
-		display: inline-block;
 		height: 1.25em;
 		width: 1.25em;
-		text-align: center;
 		font-size: 3.5em;
 		font-family: "Lato", sans-serif;
 		color: white;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		margin: 2px 2px 2px 0;
+	}
+	.navbar-light .navbar-brand {
+		color: #b2beb5;
+	}
+	.button-icon-reload {
+		color: #b2beb5;
+		border-color: #b2beb5;
+	}
+	.button-icon-reload:hover {
+		color: #fff;
+		background-color: #b2beb5;
+		border-color: #b2beb5;
+	}
+	.button-icon-reload:focus {
+		box-shadow: 0 0 0 0.25rem rgba(178, 190, 181, 0.25);
+	}
+
+	.keyboard-row {
+		display: flex;
+		width: 100%;
+		margin: 0 auto 8px;
+	}
+	#keyboard button {
+		font-family: inherit;
+		font-weight: bold;
+		margin: 0 4px 0 0;
+		height: 60px;
+		text-transform: uppercase;
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

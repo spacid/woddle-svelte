@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -63,6 +64,42 @@ export default {
 		typescript({
 			sourceMap: !production,
 			inlineSources: !production
+		}),
+		copy({
+			targets: [
+				{
+					src: "node_modules/bootstrap/dist/css/bootstrap.min.css",
+					dest: "public/vendor/bootstrap/css",
+				},
+				{
+					src: "node_modules/bootstrap/dist/css/bootstrap.min.css.map",
+					dest: "public/vendor/bootstrap/css",
+				},
+				{
+					src: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+					dest: "public/vendor/bootstrap/js",
+				},
+				{
+					src: "node_modules/bootstrap-icons/font/fonts",
+					dest: "public/vendor/bootstrap-icons/font/",
+				},
+				{
+					src: "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+					dest: "public/vendor/bootstrap-icons/font/",
+				},
+				{
+					src: "node_modules/bootstrap-icons/font/bootstrap-icons.json",
+					dest: "public/vendor/bootstrap-icons/font/",
+				},
+				{
+					src: "node_modules/bootstrap-icons/LICENSE.md",
+					dest: "public/vendor/bootstrap-icons/",
+				},
+				{
+					src: "node_modules/bootstrap-icons/bootstrap-icons.svg",
+					dest: "public/vendor/bootstrap-icons/",
+				},
+			],
 		}),
 
 		// In dev mode, call `npm run start` once
