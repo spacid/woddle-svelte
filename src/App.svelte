@@ -10,6 +10,7 @@
 		amountOfTries
 	);
 	let words: string[] = [];
+	let wordToFind: string;
 
 	enum CharMatching {
 		CorrectPlace = "correctplace",
@@ -61,6 +62,7 @@
 		words = (await res.text())
 			.split(/\r?\n/)
 			.map((item: string) => item.trim());
+		wordToFind = words[Math.floor(Math.random() * words.length)];
 	});
 </script>
 
