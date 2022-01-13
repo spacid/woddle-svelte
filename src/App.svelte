@@ -50,8 +50,50 @@
 			gameGrid[tries][inputCaret].character = "";
 		}
 	}
+	/**
+	 * The input word will be compared to the word that needs to be guessed.
+	 *
+	 * Guessing is a two-pass algorithm:
+	 * The first pass will check if the characters are in the exact spot.
+	 * The second pass is to determine the class of the characters not in the exact spot: wrong place or not used.
+	 *
+	 * First, it loops over every character in the input word. Each character will be compared to the
+	 * character in the same location of the answer word:
+	 *  - If the characters match, the character will be marked "as in the exact same place".
+	 *  - If they don't match the character of the answer will be added to a List (notMatchedChars), which will be used
+	 *    in the second pass.
+	 *
+	 * Secondly, we loop over every not-matched character of the input word again. If that character is contained in
+	 * the list with the not-matched characters of the answer word:
+	 *  - If so, the character is in the wrong place.
+	 *  - If not, the character is not used.
+	 *
+	 * It is important to note that if a character is determined to be in the wrong place, it is removed from the list
+	 * with the non matched characters.
+	 */
 	function addWord() {
 		if (inputCaret === wordLength) {
+			let notMatchedChars: string[] = new Array<string>();
+			let unmappedIndexes: number[] = new Array<number>();
+			// First pass to determine the characters in the exact same spot as the answer word.
+			for (var i = 0; i < wordLength; i++) {
+				if (wordToFind.charAt(i) === gameGrid[tries][i].character) {
+					gameGrid[tries][i].match = CharMatching.CorrectPlace;
+				} else {
+					unmappedIndexes.push(i);
+					notMatchedChars.push(wordToFind.charAt(i));
+				}
+			}
+			// Second pass to determine the class of the not-matched characters.
+			unmappedIndexes.forEach(function (idx) {
+				var char = gameGrid[tries][idx].character;
+				if (notMatchedChars.includes(char)) {
+					gameGrid[tries][idx].match = CharMatching.WrongPlace;
+					notMatchedChars.splice(notMatchedChars.indexOf(char), 1);
+				} else {
+					gameGrid[tries][idx].match = CharMatching.NotFound;
+				}
+			});
 			tries++;
 			inputCaret = 0;
 		}
