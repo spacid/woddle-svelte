@@ -2,7 +2,7 @@
 	import { each } from "svelte/internal";
 	import { onMount } from "svelte";
 
-	let amountOfTries: number = 5;
+	let amountOfTries: number = 6;
 	let tries: number = 0;
 	let wordLength: number = 5;
 	let inputCaret: number = 0;
