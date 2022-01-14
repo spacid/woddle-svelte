@@ -141,7 +141,7 @@
 	});
 </script>
 
-<main>
+<app>
 	<div id="container">
 		<div class="navbar navbar-light bg-light">
 			<div class="container-fluid">
@@ -157,7 +157,7 @@
 		</div>
 		<div class="game-grid">
 		{#each gameGrid as inputWord}
-			<div>
+			<div class="game-grid-row">
 				{#each inputWord as inputChar}
 					<div class="square {inputChar.match}">
 						{inputChar.character}
@@ -215,25 +215,13 @@
 			<p />
 		{/if}
 	</div>
-</main>
+</app>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 
 	#container {
 		margin: auto;
-		width: 30em;
+		width: 28em;
 	}
 	.correctplace {
 		background: #6aaa64;
@@ -252,7 +240,15 @@
 	}
 
 	.game-grid{
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		margin: 10px 0 10px 0;
+	}
+	.game-grid-row{
+		display: grid;
+		justify-content: center;
+		align-items: center;
 	}
 	.square {
 		vertical-align: top;
