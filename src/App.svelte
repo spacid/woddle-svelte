@@ -267,8 +267,8 @@
 		vertical-align: top;
 		border: 1px black solid;
 		border-radius: 5px;
-		height: 62px;
-		width: 62px;
+		height: 53px;
+		width: 53px;
 		font-size: 34px;
 		font-family: "Lato", sans-serif;
 		color: white;
