@@ -240,13 +240,13 @@
 	}
 
 	.game-grid{
-		display: flex;
+		display: grid;
 		justify-content: center;
 		align-items: center;
 		margin: 10px 0 10px 0;
 	}
 	.game-grid-row{
-		display: grid;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
