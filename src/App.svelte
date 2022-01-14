@@ -155,17 +155,20 @@
 				</button>
 			</div>
 		</div>
-		<div class="game-grid">
-		{#each gameGrid as inputWord}
-			<div class="game-grid-row">
-				{#each inputWord as inputChar}
-					<div class="square {inputChar.match}">
-						{inputChar.character}
+		<div class="game-grid-container">
+			<div class="game-grid">
+				{#each gameGrid as inputWord}
+					<div class="game-grid-row">
+						{#each inputWord as inputChar}
+							<div class="square {inputChar.match}">
+								{inputChar.character}
+							</div>
+						{/each}
 					</div>
 				{/each}
 			</div>
-		{/each}
 		</div>
+
 		<div id="keyboard">
 			<div class="keyboard-row">
 				<button on:click={() => addCharacter("a")}>a</button>
@@ -177,7 +180,7 @@
 				<button on:click={() => addCharacter("u")}>u</button>
 				<button on:click={() => addCharacter("i")}>i</button>
 				<button on:click={() => addCharacter("o")}>o</button>
-				<button on:click={() => addCharacter("p")}>p</button>
+				<button on:click={() => addCharacter("p")} class="last-item-row">p</button>
 			</div>
 			<div class="keyboard-row">
 				<button on:click={() => addCharacter("q")}>q</button>
@@ -189,10 +192,10 @@
 				<button on:click={() => addCharacter("j")}>j</button>
 				<button on:click={() => addCharacter("k")}>k</button>
 				<button on:click={() => addCharacter("l")}>l</button>
-				<button on:click={() => addCharacter("m")}>m</button>
+				<button on:click={() => addCharacter("m")} class="last-item-row">m</button>
 			</div>
 			<div class="keyboard-row">
-				<button on:click={addWord}>
+				<button on:click={addWord} class="double-size">
 					<span class="bi bi-arrow-return-left" />
 				</button>
 				<button on:click={() => addCharacter("w")}>w</button>
@@ -201,7 +204,7 @@
 				<button on:click={() => addCharacter("v")}>v</button>
 				<button on:click={() => addCharacter("b")}>b</button>
 				<button on:click={() => addCharacter("n")}>n</button>
-				<button on:click={removeCharacter}>
+				<button on:click={removeCharacter} class="double-size last-item-row">
 					<span class="bi bi-backspace" />
 				</button>
 			</div>
@@ -218,10 +221,19 @@
 </app>
 
 <style>
+	@media (min-width: 640px) {
+		app {
+			max-width: none;
+		}
+	}
 
 	#container {
-		margin: auto;
-		width: 28em;
+		width: 100%;
+		max-width: 500px;
+		margin: 0 auto;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 	.correctplace {
 		background: #6aaa64;
@@ -239,13 +251,14 @@
 		background: #b2beb5;
 	}
 
-	.game-grid{
-		display: grid;
-		justify-content: center;
-		align-items: center;
+	.game-grid-container {
+		margin: auto 8px 8px 8px;
+	}
+
+	.game-grid {
 		margin: 10px 0 10px 0;
 	}
-	.game-grid-row{
+	.game-grid-row {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -254,9 +267,9 @@
 		vertical-align: top;
 		border: 1px black solid;
 		border-radius: 5px;
-		height: 1.25em;
-		width: 1.25em;
-		font-size: 3.5em;
+		height: 62px;
+		width: 62px;
+		font-size: 34px;
 		font-family: "Lato", sans-serif;
 		color: white;
 		display: inline-flex;
@@ -281,11 +294,16 @@
 		box-shadow: 0 0 0 0.25rem rgba(178, 190, 181, 0.25);
 	}
 
+	#keyboard {
+		margin: auto 8px 8px 8px;
+	}
+
 	.keyboard-row {
 		display: flex;
 		width: 100%;
 		margin: 0 auto 8px;
 	}
+
 	#keyboard button {
 		font-family: inherit;
 		font-weight: bold;
@@ -296,5 +314,12 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+
+	#keyboard .keyboard-row .double-size {
+		flex: 2;
+	}
+	#keyboard .keyboard-row .last-item-row {
+		margin: 0;
 	}
 </style>
