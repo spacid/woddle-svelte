@@ -263,6 +263,7 @@
 		justify-content: center;
 		align-items: center;
 		margin: 2px 2px 2px 0;
+		text-transform: uppercase;
 	}
 	.navbar-light .navbar-brand {
 		color: #b2beb5;
