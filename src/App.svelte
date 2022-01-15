@@ -296,12 +296,14 @@
 
 	#keyboard {
 		margin: auto 8px 8px 8px;
+		touch-action: manipulation;
 	}
 
 	.keyboard-row {
 		display: flex;
 		width: 100%;
 		margin: 0 auto 8px;
+		touch-action: manipulation;
 	}
 
 	#keyboard button {
