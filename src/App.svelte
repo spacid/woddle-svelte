@@ -2,6 +2,21 @@
 	import { each } from "svelte/internal";
 	import { onMount } from "svelte";
 
+	import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
+
+	const showToast = () => {
+		const toast = toasts.add({
+			description: 'Onbekend woord',
+			duration: 1000, // in millis
+			placement: 'top-center',
+			type: 'error',
+			theme: 'light',
+			onClick: () => {},
+			onRemove: () => {},
+		});
+
+	};
+
 	let amountOfTries: number = 6;
 	let tries: number = 0;
 	let wordLength: number = 5;
@@ -10,6 +25,7 @@
 		amountOfTries
 	);
 	let words: string[] = [];
+	let validWords: Set<string>;
 	let wordToFind: string;
 
 	enum GameState {
@@ -85,11 +101,19 @@
 			tries < amountOfTries &&
 			inputCaret === wordLength
 		) {
+			let inputWord: string = "";
+			for (var z = 0; z < wordLength; z++){
+				inputWord += gameGrid[tries][z].character;
+			}
+			if (!validWords.has(inputWord)) {
+				showToast();
+				return;
+			}
 			let notMatchedChars: string[] = new Array<string>();
 			let unmappedIndexes: number[] = new Array<number>();
 			// First pass to determine the characters in the exact same spot as the answer word.
 			for (var i = 0; i < wordLength; i++) {
-				if (wordToFind.charAt(i) === gameGrid[tries][i].character) {
+				if (wordToFind.charAt(i) === inputWord.charAt(i)) {
 					gameGrid[tries][i].match = CharMatching.CorrectPlace;
 				} else {
 					unmappedIndexes.push(i);
@@ -98,7 +122,7 @@
 			}
 			// Second pass to determine the class of the not-matched characters.
 			unmappedIndexes.forEach(function (idx) {
-				var char = gameGrid[tries][idx].character;
+				var char = inputWord.charAt(idx);
 				if (notMatchedChars.includes(char)) {
 					gameGrid[tries][idx].match = CharMatching.WrongPlace;
 					notMatchedChars.splice(notMatchedChars.indexOf(char), 1);
@@ -137,11 +161,16 @@
 		words = (await res.text())
 			.split(/\r?\n/)
 			.map((item: string) => item.trim());
+		validWords = new Set(words);
 		wordToFind = getRandomWord();
+		console.log(wordToFind);
 	});
 </script>
 
 <app>
+	<ToastContainer placement="top-center" let:data={data}>
+		<FlatToast {data} /> <!-- Provider template for your toasts -->
+	</ToastContainer>
 	<div id="container">
 		<div class="navbar navbar-light bg-light">
 			<div class="container-fluid">
